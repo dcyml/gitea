@@ -1,0 +1,30 @@
+version: '2'
+services:
+  web:
+    image: docker2.cncf.ir/gitea/gitea:latest
+    environment:
+      - APP_NAME=G
+      - DB_TYPE=mysql
+      - DB_HOST=gitea_db_1
+      - DB_NAME=gitea
+      - DB_USER=gitea
+      - DB_PASSED=
+      - DISABLE_REGISTRATION='true'
+    ports:
+      - '80:3000'
+      - '22:22'
+    volumes:
+      - ./data:/data
+    depends_on:
+      - db
+    restart: always
+  db:
+    image: docker2.cncf.ir/library/mariadb:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_DATABASE=gitea
+      - MYSQL_USER=gitea
+      - MYSQL_PASSWORD=
+    volumes:
+      - ./db/:/var/lib/mysql
+    restart: always
